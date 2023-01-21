@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Camera, CameraType } from "expo-camera"
 import * as MediaLibrary from "expo-media-library"
 import React, { useState, useEffect, useRef } from "react";
+import Button from "./components/button";
 
 export default function CameraPage() {
 
@@ -34,6 +35,8 @@ export default function CameraPage() {
                 {/* <Text> Hello</Text> */}
 
             </Camera>
+
+            <Button icon="mic"></Button>
         </View>
     )
 }
