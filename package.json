@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@azure/cognitiveservices-computervision": "^8.2.0",
+    "@azure/cognitiveservices-contentmoderator": "^5.0.1",
+    "@azure/cognitiveservices-face": "^5.0.0",
+    "@azure/ms-rest-js": "^2.6.4",
+    "uuid": "^9.0.0"
+  }
+}
