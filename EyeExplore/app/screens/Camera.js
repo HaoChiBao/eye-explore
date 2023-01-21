@@ -36,7 +36,7 @@ export default function CameraPage() {
 
             </Camera>
 
-            <Button icon="mic"></Button>
+            <Button icon="mic" onPress={this.recognizeObjects}></Button>
         </View>
     )
 }
