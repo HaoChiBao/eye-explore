@@ -25,6 +25,18 @@ export default function CameraPage() {
         }, []
     )
 
+    const takePicture = async () => {
+        if (cameraRef) {
+            try {
+                const data = await cameraRef.current.takePictureAsync();
+                console.log(data);
+                setImage(data.uri);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    };
+
     return (
         <View style={styles.container}>
             <Camera style={styles.camera}
@@ -36,8 +48,8 @@ export default function CameraPage() {
 
             </Camera>
 
-            <Button icon="mic" onPress={this.recognizeObjects}></Button>
-        </View>
+            <Button icon="mic" onPress={() => takePicture()}></Button>
+        </View >
     )
 }
 
