@@ -1,4 +1,5 @@
 import { addDoc, collection } from 'firebase/firestore/lite';
+import React, {useState} from 'react'
 import { System } from '../../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { View, Text, Button, Pressable, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
@@ -8,42 +9,38 @@ import { TextInput } from "@react-native-material/core";
 // add register with google account
 
 let system = new System();
-let state = true
 
 function Login({ navigation }) {
-    window.onload = function () {
-        if (state) {
 
-            const button = document.getElementById('execute')
+    function auth(){
 
-            const dbUsers = collection(system.db, 'users')
+        if (email != '' && password != '') {
 
-            button.addEventListener('click', () => {
-                // const username = document.getElementById('username').value
-                const email = document.getElementById('email').value
-                const password = document.getElementById('password').value
+            signInWithEmailAndPassword(system.getAuth.auth, email, password).then((promise) => {
+                console.log(promise.user.uid, '- user reference')
+                console.log('auth accepted')
 
-                if (email != '' && password != '') {
+                localStorage.setItem('flash-card-uid', promise.user.uid)
+                // redirect to Home page from here
 
-                    signInWithEmailAndPassword(system.getAuth.auth, email, password).then((promise) => {
-                        console.log(promise.user.uid, '- user reference')
-                        console.log('auth accepted')
+                navigation.navigate('Camera')
+                return true
 
-                        localStorage.setItem('flash-card-uid', promise.user.uid)
-                        // redirect to Home page from here
-                    }).catch((error) => {
-                        console.log(error)
-                    })
-
-                } else {
-                    document.getElementById('error-msg').innerHTML = 'Please fill all fields properly'
-                    console.log('Please fill all fields properly')
-                }
-
+            }).catch((error) => {
+                console.log(error)
             })
+
+        } else {
+            console.log('Please fill all fields properly')
+            return false
         }
+
     }
+
+
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
+
+    const {text, setText} = useState('');
 
     return (
         <View id="login" style={styles.container}>
@@ -54,9 +51,19 @@ function Login({ navigation }) {
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset} >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <View>
-                            <TextInput variant="outlined" style={styles.input} type="text" id='email' placeholder='Email Address' placeholderTextColor={'#40376E'}></TextInput>
-                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password" id='password' placeholder='Password' placeholderTextColor={'#40376E'}></TextInput>
-                            <Pressable id="execute" style={styles.button} onPress={() => navigation.navigate('Camera')
+                            <TextInput variant="outlined" style={styles.input} type="text" 
+                                id='email' placeholder='Email Address' 
+                                placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setText(newText)}
+                                defaultValue={text}>
+                            </TextInput>
+                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password" 
+                                id='password' placeholder='Password' 
+                                placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setText(newText)}
+                                defaultValue={text}>
+                            </TextInput>
+                            <Pressable id="execute" style={styles.button} onPress={() => auth()
                             }>
                                 <Text style={styles.start}>Login</Text>
                             </Pressable>
