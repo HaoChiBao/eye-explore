@@ -11,15 +11,18 @@ function WelcomeLoading({ navigation }) {
     const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
     const themeContainerStyle =
         colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
+    const themeButtonText =
+        colorScheme === 'light' ? styles.buttonLight : styles.buttonDark;
+    const themeTextButtonStyle = colorScheme === 'light' ? styles.lightButtonStyle : styles.darkButtonStyle;
 
     return (
         <View style={[styles.container, themeContainerStyle]}>
 
 
             <Text style={[styles.welcome, themeTextStyle]}>Welcome!</Text>
-            <Pressable style={[styles.button, themeTextStyle, themeContainerStyle]} onPress={() => navigation.navigate('SignUpLogin')
+            <Pressable style={{ ...styles.button, ...themeTextButtonStyle }} onPress={() => navigation.navigate('SignUpLogin')
             }>
-                <Text style={[styles.start, themeTextStyle]}>Let's get started.</Text>
+                <Text style={{ ...styles.start, ...themeButtonText }}>Let's get started.</Text>
             </Pressable>
             <StatusBar />
         </View>
@@ -35,7 +38,7 @@ const styles = StyleSheet.create(
             paddingHorizontal: 32,
             borderRadius: 20,
             elevation: 3,
-            backgroundColor: '#40376E',
+            // backgroundColor: '#40376E',
         },
 
         container: {
@@ -48,7 +51,7 @@ const styles = StyleSheet.create(
         welcome: {
             fontWeight: "700",
             fontSize: "64px",
-            color: "#40376E",
+            // color: "#40376E",
             textAlign: 'left',
 
         },
@@ -56,7 +59,7 @@ const styles = StyleSheet.create(
         start: {
             textAlign: 'left',
             fontSize: "38px",
-            color: "#F2F3FF",
+            //color: "#F200000",
 
         },
 
@@ -73,9 +76,27 @@ const styles = StyleSheet.create(
         },
         darkThemeText: {
             color: '#F2F3FF',
+        },
+
+        buttonLight: {
+            color: '#F2F3FF',
+        },
+
+        buttonDark: {
+            color: '#40376E',
+        },
 
 
+        lightButtonStyle: {
+            color: '#F2F3FF',
+            backgroundColor: '#40376E'
+        },
+
+        darkButtonStyle: {
+            color: '#40376E',
+            backgroundColor: '#F2F3FF'
         }
+
     }
 )
 

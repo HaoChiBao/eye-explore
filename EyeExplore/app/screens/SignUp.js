@@ -1,8 +1,10 @@
 
-import { View, Text, Button, Pressable, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Button, Pressable, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, useColorScheme } from 'react-native';
 import { TextInput } from "@react-native-material/core";
 import React, { useState } from 'react'
 import { collection, setDoc, doc } from 'firebase/firestore/lite';
+import { StatusBar } from 'expo-status-bar'; // automatically switches bar style based on theme!
+
 import { System } from '../../firebase/config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -11,6 +13,15 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 let system = new System();
 
 function Register({ navigation }) {
+
+    const colorScheme = useColorScheme();
+
+    const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle =
+        colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
+    const themeButtonText =
+        colorScheme === 'light' ? styles.buttonLight : styles.buttonDark;
+    const themeTextButtonStyle = colorScheme === 'light' ? styles.lightButtonStyle : styles.darkButtonStyle;
 
     const [email, setEmail] = useState('');
 
@@ -51,11 +62,11 @@ function Register({ navigation }) {
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 
     return (
-        <View id="register" style={styles.container}>
+        <View id="register" style={[styles.container, themeContainerStyle]}>
 
 
             <View>
-                <Text style={styles.welcome}>Create an Account!   </Text>
+                <Text style={[styles.welcome, themeTextStyle]}>Create an Account!   </Text>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset} >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -73,9 +84,9 @@ function Register({ navigation }) {
                                 onChangeText={newText => setPassword(newText)}
                                 defaultValue={password}
                             ></TextInput>
-                            <Pressable id="execute" style={styles.button} onPress={() => auth()
+                            <Pressable id="execute" style={[styles.button, themeTextButtonStyle]} onPress={() => auth()
                             }>
-                                <Text style={styles.start}>Sign Up</Text>
+                                <Text style={[styles.start, themeButtonText]}>Sign Up</Text>
                             </Pressable>
                             {/* <Button id='execute'>
                 click</Button> */}
@@ -111,9 +122,10 @@ const styles = StyleSheet.create(
         container: {
             flex: "1",
             justifyContent: 'center',
-            margin: 6,
+            padding: 6,
+            // margin: 6,
             alignItems: 'center',
-            backgroundColor: '#F2F3FF',
+            // backgroundColor: '#F2F3FF',
         },
 
         welcome: {
@@ -135,6 +147,39 @@ const styles = StyleSheet.create(
             marginVertical: 5,
         },
 
+        lightContainer: {
+            backgroundColor: '#F2F3FF',
+        },
+
+        darkContainer: {
+            backgroundColor: '#40376E',
+        },
+
+        lightThemeText: {
+            color: '#40376E',
+        },
+        darkThemeText: {
+            color: '#F2F3FF',
+        },
+
+        buttonLight: {
+            color: '#F2F3FF',
+        },
+
+        buttonDark: {
+            color: '#40376E',
+        },
+
+
+        lightButtonStyle: {
+            color: '#F2F3FF',
+            backgroundColor: '#40376E'
+        },
+
+        darkButtonStyle: {
+            color: '#40376E',
+            backgroundColor: '#F2F3FF'
+        }
 
     }
 )

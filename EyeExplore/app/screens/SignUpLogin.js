@@ -1,20 +1,32 @@
 import React from 'react';
-import { StyleSheet, View, Text, Pressable, onPress } from 'react-native';
+import { StyleSheet, View, Text, Pressable, onPress, useColorScheme } from 'react-native';
+import { StatusBar } from 'expo-status-bar'; // automatically switches bar style based on theme!
+
 
 function SignUpLogin({ navigation }) {
+
+    const colorScheme = useColorScheme();
+
+    const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle =
+        colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
+    const themeButtonText =
+        colorScheme === 'light' ? styles.buttonLight : styles.buttonDark;
+    const themeTextButtonStyle = colorScheme === 'light' ? styles.lightButtonStyle : styles.darkButtonStyle;
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, themeContainerStyle]}>
 
             <View>
 
-                <Text style={styles.welcome}>Discover with EyeExplore!</Text>
-                <Pressable style={styles.button} onPress={() => navigation.navigate('SignUp')
+                <Text style={[styles.welcome, themeTextStyle]}>Discover with EyeExplore!</Text>
+                <Pressable style={[styles.button, themeTextButtonStyle]} onPress={() => navigation.navigate('SignUp')
                 }>
-                    <Text style={styles.start}>Sign Up</Text>
+                    <Text style={[styles.start, themeButtonText]}>Sign Up</Text>
                 </Pressable>
-                <Pressable style={styles.button} onPress={() => navigation.navigate('Login')
+                <Pressable style={[styles.button, themeTextButtonStyle]} onPress={() => navigation.navigate('Login')
                 }>
-                    <Text style={styles.start}>Log in</Text>
+                    <Text style={[styles.start, themeButtonText]}>Log in</Text>
                 </Pressable>
             </View>
         </View>
@@ -55,6 +67,41 @@ const styles = StyleSheet.create(
             color: "#F2F3FF",
 
         },
+
+        lightContainer: {
+            backgroundColor: '#F2F3FF',
+        },
+
+        darkContainer: {
+            backgroundColor: '#40376E',
+        },
+
+        lightThemeText: {
+            color: '#40376E',
+        },
+        darkThemeText: {
+            color: '#F2F3FF',
+        },
+
+        buttonLight: {
+            color: '#F2F3FF',
+        },
+
+        buttonDark: {
+            color: '#40376E',
+        },
+
+
+        lightButtonStyle: {
+            color: '#F2F3FF',
+            backgroundColor: '#40376E'
+        },
+
+        darkButtonStyle: {
+            color: '#40376E',
+            backgroundColor: '#F2F3FF'
+        }
+
 
     }
 )
