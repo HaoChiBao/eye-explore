@@ -12,7 +12,8 @@ let system = new System();
 
 function Login({ navigation }) {
 
-    function auth() {
+    function auth(){
+
         console.log(1)
         if (email != '' && password != '') {
 
@@ -39,7 +40,7 @@ function Login({ navigation }) {
 
 
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
-
+    
     const [email, setEmail] = useState('');
 
     const [password, setPassword] = useState('');
