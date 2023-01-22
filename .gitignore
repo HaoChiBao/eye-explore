@@ -1,1 +1,8 @@
+<<<<<<< Updated upstream
 node_modules
+=======
+googleVisionAPI.json
+googleSpeechToText.json
+API_Calls/config.py
+
+>>>>>>> Stashed changes
