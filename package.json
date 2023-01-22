@@ -4,6 +4,7 @@
     "@azure/cognitiveservices-contentmoderator": "^5.0.1",
     "@azure/cognitiveservices-face": "^5.0.0",
     "@azure/ms-rest-js": "^2.6.4",
+    "@react-native-firebase/storage": "^16.5.1",
     "node-fetch": "^3.3.0",
     "uuid": "^9.0.0"
   }

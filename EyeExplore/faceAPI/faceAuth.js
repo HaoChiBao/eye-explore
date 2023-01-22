@@ -24,12 +24,14 @@ async function authenticateFace() {
         
         console.log()
         console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
+        console.log('Confidence level:', confidence, '%')
         if(confidence >= 90) {
             console.log('authorized (:')
+            return true
         } else {
             console.log('ayo who dis?')
+            return false
         }
-        console.log('Confidence level:', confidence, '%')
     })
     .catch(err => console.error(err));
     // const json = await response.json();

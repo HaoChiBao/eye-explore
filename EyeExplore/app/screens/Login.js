@@ -13,7 +13,7 @@ let system = new System();
 function Login({ navigation }) {
 
     function auth(){
-
+        console.log(1)
         if (email != '' && password != '') {
 
             signInWithEmailAndPassword(system.getAuth.auth, email, password).then((promise) => {
@@ -40,7 +40,7 @@ function Login({ navigation }) {
 
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 
-    const {text, setText} = useState('');
+    const [text, setText] = useState('');
 
     return (
         <View id="login" style={styles.container}>
