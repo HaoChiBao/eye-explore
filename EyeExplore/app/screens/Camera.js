@@ -1,13 +1,24 @@
-import { StyleSheet, Text, View, colorScheme } from "react-native";
+import { StyleSheet, Text, View, colorScheme, FlatList } from "react-native";
 import { Camera, CameraType } from "expo-camera"
+import { manipulateAsync } from 'expo'
 import * as MediaLibrary from "expo-media-library"
+import * as ImageManipulator from 'expo-image-manipulator';
 import { StatusBar } from 'expo-status-bar'; // automatically switches bar style based on theme!
 
 import React, { useState, useEffect, useRef } from "react";
 import Button from "./components/button";
 
+const Clarifai = require('clarifai');
+
+const clarifai = new Clarifai.App({
+    apiKey: 'e77113546f144f94ab97bccfb62224b4'
+});
+process.nextTick = setImmediate;
+
 export default function CameraPage() {
 
+
+    const [predictions, setPredictions] = useState([])
     const [hasCameraPermissions, setHasCameraPermission] = useState(null);
     const [hasMicPermissions, setHasMicPermissions] = useState(null);
     const [image, setImage] = useState(null);
@@ -41,11 +52,41 @@ export default function CameraPage() {
                 const data = await cameraRef.current.takePictureAsync();
                 console.log(data);
                 setImage(data.uri);
+                return data.uri
             } catch (e) {
                 console.log(e);
             }
         }
     };
+
+    resize = async photo => {
+        let manipulatedImage = await ImageManipulator.manipulateAsync(
+            photo,
+            [{ resize: { height: 300, width: 300 } }],
+            { base64: true }
+        ).catch((e) => {
+            console.log(e);
+            throw e;
+        })
+        return manipulatedImage.base64;
+    };
+
+
+    predict = async image => {
+        let predictions = await clarifai.models.predict(
+            Clarifai.GENERAL_MODEL,
+            image
+        );
+        return predictions;
+    };
+
+    objectDetection = async () => {
+        let photo = await takePicture();
+        let resized = await resize(photo);
+        let predictions = await predict(resized);
+        setPredictions(predictions.outputs[0].data.concepts)
+    };
+
 
     return (
         <View style={[styles.container, themeContainerStyle]}>
@@ -56,9 +97,19 @@ export default function CameraPage() {
 
                 {/* <Text> Hello</Text> */}
 
-            </Camera>
 
-            <Button icon="mic" onPress={() => takePicture()}></Button>
+
+                <FlatList
+                    data={predictions.map(prediction => ({
+                        key: `${prediction.name} ${prediction.value}`,
+                    }))}
+                    renderItem={({ item }) => (
+                        <Text style={{ paddingLeft: 15, color: 'white', fontSize: 20 }}>{item.key}</Text>
+                    )}
+                />
+
+                <Button icon="mic" onPress={objectDetection}></Button>
+            </Camera>
         </View >
     )
 }

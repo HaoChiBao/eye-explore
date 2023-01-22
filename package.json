@@ -5,7 +5,12 @@
     "@azure/cognitiveservices-face": "^5.0.0",
     "@azure/ms-rest-js": "^2.6.4",
     "@react-native-firebase/storage": "^16.5.1",
+    "expo-image-manipulator": "~11.0.0",
     "node-fetch": "^3.3.0",
+    "react-native-camera-kit": "^13.0.0",
+    "react-native-gesture-handler": "^2.9.0",
+    "react-native-reanimated": "^2.14.4",
+    "react-native-vision-camera": "^2.15.2",
     "uuid": "^9.0.0"
   }
 }

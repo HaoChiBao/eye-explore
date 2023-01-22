@@ -41,7 +41,7 @@ export default function Camera2() {
             try {
                 const data = await cameraRef.current.takePictureAsync();
                 console.log(data);
-                uploadImageToAuth(data.uri, 'test.jpg');
+                // uploadImageToAuth(data.uri, 'test.jpg');
 
                 setImage(data.uri);
             } catch (e) {
