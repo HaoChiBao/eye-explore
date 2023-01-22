@@ -1,13 +1,15 @@
 from flask import Flask, request, jsonify
 from playsound import playsound
 from flask_cors import CORS
-from config import COHERE_API_KEY, CHAT_GPT_API_KEY
+from config import COHERE_API_KEY, CHAT_GPT_API_KEY, ESTUARY_API_KEY
 from google.cloud import speech
 import io
 from gtts import gTTS
 import os
 import cohere
 import openai as ai
+from requests import request
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -81,14 +83,53 @@ def upload():
     return jsonify(translatedResponses), 200
 
 
-@app.route("/getImage/<imageID>", methods=["GET"])
-def getImage():
-    return
+@app.route("/getImage/<imageName>", methods=["GET"])
+def getImage(imageName):
+    with open("cid.json") as file:
+        cid = json.load(file)[imageName]
+        # get = request("GET", "api.estuary.tech/gw/ipfs/" + cid)
+
+    return {"cid": "https://api.estuary.tech/gw/ipfs/{}".format(cid)}, 200
 
 
-@app.route("/postImage/<imageID>", methods=["POST"])
-def postImage():
-    return jsonify({}), 200
+@app.route("/postImage/<imageName>/<filePath>", methods=["POST"])
+def postImage(imageName, filePath):
+    print(os.getcwd())
+    payload = {
+        "filename": imageName
+    }
+
+    files = [
+        ('data', ('file', open(filePath, 'rb'), 'application/octet-stream'))
+    ]
+
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': "Bearer " + ESTUARY_API_KEY
+    }
+
+    for i in range(5):
+        response = request("POST", "https://api.estuary.tech/content/add", headers=headers, data=payload, files=files)
+        print(response.status_code)
+        status = response.status_code
+        if status == 200:
+            break
+        if i == 4:
+            return -1
+
+    print(response.text)
+    print(response)
+
+    with open("cid.json") as file:
+        JSONfile = json.load(file)
+
+        JSONfile[imageName] = json.loads(response.text)["cid"]
+
+    with open("cid.json", "w") as file2:
+        json.dump(JSONfile, file2)
+        os.remove(filePath)
+
+    return response.text, 200
 
 
 if __name__ == "__main__":

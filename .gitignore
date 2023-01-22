@@ -4,5 +4,6 @@ node_modules
 googleVisionAPI.json
 googleSpeechToText.json
 API_Calls/config.py
-
+google.json
+googleSpeechToText.json
 >>>>>>> Stashed changes
