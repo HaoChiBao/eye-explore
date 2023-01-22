@@ -6,6 +6,7 @@ import SignUp from './app/screens/SignUp';
 import Login from './app/screens/Login';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 import CameraPage from './app/screens/Camera';
 import Camera2 from './app/screens/Camera2';
 
@@ -14,8 +15,6 @@ const Stack = createNativeStackNavigator();
 
 
 export default function App() {
-
-
 
   return (
     <NavigationContainer>
