@@ -3,7 +3,7 @@ import { Camera, CameraType } from "expo-camera"
 import * as MediaLibrary from "expo-media-library"
 import React, { useState, useEffect, useRef } from "react";
 import Button from "./components/button";
-import uploadImageToAuth from "../../firebase/uploadImg";
+import {uploadImageToAuth} from "../../firebase/uploadImg";
 
 export default function Camera2() {
 
@@ -32,7 +32,7 @@ export default function Camera2() {
                 const data = await cameraRef.current.takePictureAsync();
                 console.log(data);
                 uploadImageToAuth(data.uri, 'test.jpg');
-                
+
                 setImage(data.uri);
             } catch (e) {
                 console.log(e);
