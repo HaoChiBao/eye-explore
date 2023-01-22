@@ -3,15 +3,14 @@ import {getFirestore} from 'firebase/firestore/lite';
 import { Auth } from './auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAVbDmak2KdFJMwuYzGbf-zqeD5cD6BNeQ",
-    authDomain: "flash-cards-9c3f7.firebaseapp.com",
-    databaseURL: "https://flash-cards-9c3f7-default-rtdb.firebaseio.com",
-    projectId: "flash-cards-9c3f7",
-    storageBucket: "flash-cards-9c3f7.appspot.com",
-    messagingSenderId: "885289134038",
-    appId: "1:885289134038:web:8346800f13cf6fd7d42677",
-    measurementId: "G-K78MHSQ434"
-  };
+  apiKey: "AIzaSyC_FweyDpRY32-nnCdqvK8e7mDZk9DayB4",
+  authDomain: "eye-explore.firebaseapp.com",
+  projectId: "eye-explore",
+  storageBucket: "eye-explore.appspot.com",
+  messagingSenderId: "162323951410",
+  appId: "1:162323951410:web:76f02e0509b6222cb4312b",
+  measurementId: "G-RFFB2C7MN4"
+};
 
 class System {
   constructor(){

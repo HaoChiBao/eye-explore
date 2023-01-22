@@ -1,5 +1,4 @@
-// import {API_KEY, API_SECRET} from './faceAPI/system.js';
-
+// using face++ API
 async function authenticateFace() {
 
     const API_KEY = 'o0dH1DR8ZXFI70MdeHLKcWEZKt7c0dMS';
@@ -26,6 +25,13 @@ async function authenticateFace() {
         console.log()
         console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
         console.log('Confidence level:', confidence, '%')
+        if(confidence >= 90) {
+            console.log('authorized (:')
+            return true
+        } else {
+            console.log('ayo who dis?')
+            return false
+        }
     })
     .catch(err => console.error(err));
     // const json = await response.json();

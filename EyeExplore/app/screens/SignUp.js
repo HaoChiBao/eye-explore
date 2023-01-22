@@ -1,52 +1,60 @@
-import React from 'react';
-import { View, Text, Button, Pressable, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
-import { TextInput } from "@react-native-material/core";
 
+import { View, Text, Button, Pressable, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, useColorScheme } from 'react-native';
+import { TextInput } from "@react-native-material/core";
+import React, { useState } from 'react'
 import { collection, setDoc, doc } from 'firebase/firestore/lite';
+import { StatusBar } from 'expo-status-bar'; // automatically switches bar style based on theme!
+
 import { System } from '../../firebase/config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 // add register with google account
 
 let system = new System();
-let state = true
+
 function Register({ navigation }) {
-    window.onload = function () {
-        if (state) {
 
-            const button = document.getElementById('execute')
+    const colorScheme = useColorScheme();
 
-            button.addEventListener('click', () => {
-                const username = document.getElementById('username').value
-                const email = document.getElementById('email').value
-                const password = document.getElementById('password').value
+    const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle =
+        colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
+    const themeButtonText =
+        colorScheme === 'light' ? styles.buttonLight : styles.buttonDark;
+    const themeTextButtonStyle = colorScheme === 'light' ? styles.lightButtonStyle : styles.darkButtonStyle;
 
-                if (username != '' && email != '' && password != '' && password.length >= 6) {
+    const [email, setEmail] = useState('');
 
-                    createUserWithEmailAndPassword(system.getAuth.auth, email, password).then((promise) => {
-                        let uid = promise.user.uid
-                        console.log(uid, '- user reference')
+    const [password, setPassword] = useState('');
 
-                        setDoc(doc(system.db, 'users', uid), { username: username })
-                            .then(() => {
-                                console.log('success - added in db')
+    const [username, setUsername] = useState('');
 
-                                // save uid in local storage
-                                localStorage.setItem('flash-card-uid', promise.user.uid)
+    function auth() {
+        if (username != '' && email != '' && password != '' && password.length >= 6) {
 
-                                // redirect to Home page from here
-                            })
+            createUserWithEmailAndPassword(system.getAuth.auth, email, password).then((promise) => {
+                let uid = promise.user.uid
+                console.log(uid, '- user reference')
 
-                    }).catch((error) => {
-                        console.log(error)
-                    })
+                // if (cum == 0) {
+                //     setDoc(doc(system.db, 'users', uid), { username: username })
+                //         .then(() => {
+                console.log('success - added in db')
 
-                } else {
-                    document.getElementById('error-msg').innerHTML = 'Please fill all fields properly'
-                    console.log('Please fill all fields properly')
-                }
+                // save uid in local storage
+                // localStorage.setItem('flash-card-uid', promise.user.uid)
+                // redirect to Home page from here
+                navigation.navigate('Camera')
+                //     })
+                // cum += 1
+                // }
 
+            }).catch((error) => {
+                console.log(error)
             })
+
+        } else {
+            console.log('Please fill all fields properly')
         }
     }
 
@@ -54,22 +62,31 @@ function Register({ navigation }) {
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 
     return (
-        <View id="register" style={styles.container}>
+        <View id="register" style={[styles.container, themeContainerStyle]}>
 
 
             <View>
-                <Text style={styles.welcome}>Create an Account!   </Text>
+                <Text style={[styles.welcome, themeTextStyle]}>Create an Account!   </Text>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset} >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <View>
 
-                            <TextInput variant="outlined" style={styles.input} type="text" id='username' placeholder='Username' placeholderTextColor={'#40376E'}></TextInput>
-                            <TextInput variant="outlined" style={styles.input} type="text" id='email' placeholder='Email Address' placeholderTextColor={'#40376E'}></TextInput>
-                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password" id='password' placeholder='Password' placeholderTextColor={'#40376E'}></TextInput>
-                            <Pressable id="execute" style={styles.button} onPress={() => navigation.navigate('Camera')
+                            <TextInput variant="outlined" style={styles.input} type="text" id='username' placeholder='Username' placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setUsername(newText)}
+                                defaultValue={username}>
+                            </TextInput>
+                            <TextInput variant="outlined" style={styles.input} type="text" id='email' placeholder='Email Address' placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setEmail(newText)}
+                                defaultValue={email}
+                            ></TextInput>
+                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password" id='password' placeholder='Password' placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setPassword(newText)}
+                                defaultValue={password}
+                            ></TextInput>
+                            <Pressable id="execute" style={[styles.button, themeTextButtonStyle]} onPress={() => auth()
                             }>
-                                <Text style={styles.start}>Sign Up</Text>
+                                <Text style={[styles.start, themeButtonText]}>Sign Up</Text>
                             </Pressable>
                             {/* <Button id='execute'>
                 click</Button> */}
@@ -105,9 +122,10 @@ const styles = StyleSheet.create(
         container: {
             flex: "1",
             justifyContent: 'center',
-            margin: 6,
+            padding: 6,
+            // margin: 6,
             alignItems: 'center',
-            backgroundColor: '#F2F3FF',
+            // backgroundColor: '#F2F3FF',
         },
 
         welcome: {
@@ -129,6 +147,39 @@ const styles = StyleSheet.create(
             marginVertical: 5,
         },
 
+        lightContainer: {
+            backgroundColor: '#F2F3FF',
+        },
+
+        darkContainer: {
+            backgroundColor: '#40376E',
+        },
+
+        lightThemeText: {
+            color: '#40376E',
+        },
+        darkThemeText: {
+            color: '#F2F3FF',
+        },
+
+        buttonLight: {
+            color: '#F2F3FF',
+        },
+
+        buttonDark: {
+            color: '#40376E',
+        },
+
+
+        lightButtonStyle: {
+            color: '#F2F3FF',
+            backgroundColor: '#40376E'
+        },
+
+        darkButtonStyle: {
+            color: '#40376E',
+            backgroundColor: '#F2F3FF'
+        }
 
     }
 )

@@ -4,11 +4,16 @@
     "@azure/cognitiveservices-contentmoderator": "^5.0.1",
     "@azure/cognitiveservices-face": "^5.0.0",
     "@azure/ms-rest-js": "^2.6.4",
+<<<<<<< HEAD
     "@google-cloud/speech": "^5.1.1",
     "@google-cloud/vision": "^3.1.0",
     "@googleapis/docs": "^2.0.0",
     "googleapis": "^110.0.0",
     "nodemon": "^2.0.20",
+=======
+    "@react-native-firebase/storage": "^16.5.1",
+    "node-fetch": "^3.3.0",
+>>>>>>> master
     "uuid": "^9.0.0"
   }
 }

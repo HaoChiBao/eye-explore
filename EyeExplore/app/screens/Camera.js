@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, colorScheme } from "react-native";
 import { Camera, CameraType } from "expo-camera"
 import * as MediaLibrary from "expo-media-library"
+import { StatusBar } from 'expo-status-bar'; // automatically switches bar style based on theme!
+
 import React, { useState, useEffect, useRef } from "react";
 import Button from "./components/button";
 
@@ -12,6 +14,14 @@ export default function CameraPage() {
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
     const cameraRef = useRef(null);
+
+    const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle =
+        colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
+    const themeButtonText =
+        colorScheme === 'light' ? styles.buttonLight : styles.buttonDark;
+    const themeTextButtonStyle = colorScheme === 'light' ? styles.lightButtonStyle : styles.darkButtonStyle;
+
 
     useEffect(
         () => {
@@ -38,7 +48,7 @@ export default function CameraPage() {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, themeContainerStyle]}>
             <Camera style={styles.camera}
                 type={type}
                 flashMode={flash}
@@ -64,6 +74,43 @@ const styles = StyleSheet.create(
         camera: {
             flex: '1',
             borderRadius: 20,
+        },
+
+        lightContainer: {
+            backgroundColor: '#F2F3FF',
+        },
+
+        darkContainer: {
+            backgroundColor: '#40376E',
+        },
+
+        lightThemeText: {
+            color: '#40376E',
+        },
+        darkThemeText: {
+            color: '#F2F3FF',
+        },
+
+        buttonLight: {
+            color: '#F2F3FF',
+        },
+
+        buttonDark: {
+            color: '#40376E',
+        },
+
+
+        lightButtonStyle: {
+            color: '#F2F3FF',
+            backgroundColor: '#40376E'
+        },
+
+        darkButtonStyle: {
+            color: '#40376E',
+            backgroundColor: '#F2F3FF'
         }
+
     }
+
+
 )
