@@ -1,7 +1,7 @@
-import React from 'react';
+
 import { View, Text, Button, Pressable, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { TextInput } from "@react-native-material/core";
-
+import React, { useState } from 'react'
 import { collection, setDoc, doc } from 'firebase/firestore/lite';
 import { System } from '../../firebase/config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -9,44 +9,41 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 // add register with google account
 
 let system = new System();
-let state = true
+
 function Register({ navigation }) {
-    window.onload = function () {
-        if (state) {
 
-            const button = document.getElementById('execute')
+    const [email, setEmail] = useState('');
 
-            button.addEventListener('click', () => {
-                const username = document.getElementById('username').value
-                const email = document.getElementById('email').value
-                const password = document.getElementById('password').value
+    const [password, setPassword] = useState('');
 
-                if (username != '' && email != '' && password != '' && password.length >= 6) {
+    const [username, setUsername] = useState('');
 
-                    createUserWithEmailAndPassword(system.getAuth.auth, email, password).then((promise) => {
-                        let uid = promise.user.uid
-                        console.log(uid, '- user reference')
+    function auth() {
+        if (username != '' && email != '' && password != '' && password.length >= 6) {
 
-                        setDoc(doc(system.db, 'users', uid), { username: username })
-                            .then(() => {
-                                console.log('success - added in db')
+            createUserWithEmailAndPassword(system.getAuth.auth, email, password).then((promise) => {
+                let uid = promise.user.uid
+                console.log(uid, '- user reference')
 
-                                // save uid in local storage
-                                localStorage.setItem('flash-card-uid', promise.user.uid)
+                // if (cum == 0) {
+                //     setDoc(doc(system.db, 'users', uid), { username: username })
+                //         .then(() => {
+                console.log('success - added in db')
 
-                                // redirect to Home page from here
-                            })
+                // save uid in local storage
+                // localStorage.setItem('flash-card-uid', promise.user.uid)
+                // redirect to Home page from here
+                navigation.navigate('Camera')
+                //     })
+                // cum += 1
+                // }
 
-                    }).catch((error) => {
-                        console.log(error)
-                    })
-
-                } else {
-                    document.getElementById('error-msg').innerHTML = 'Please fill all fields properly'
-                    console.log('Please fill all fields properly')
-                }
-
+            }).catch((error) => {
+                console.log(error)
             })
+
+        } else {
+            console.log('Please fill all fields properly')
         }
     }
 
@@ -64,10 +61,19 @@ function Register({ navigation }) {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <View>
 
-                            <TextInput variant="outlined" style={styles.input} type="text" id='username' placeholder='Username' placeholderTextColor={'#40376E'}></TextInput>
-                            <TextInput variant="outlined" style={styles.input} type="text" id='email' placeholder='Email Address' placeholderTextColor={'#40376E'}></TextInput>
-                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password" id='password' placeholder='Password' placeholderTextColor={'#40376E'}></TextInput>
-                            <Pressable id="execute" style={styles.button} onPress={() => navigation.navigate('Camera')
+                            <TextInput variant="outlined" style={styles.input} type="text" id='username' placeholder='Username' placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setUsername(newText)}
+                                defaultValue={username}>
+                            </TextInput>
+                            <TextInput variant="outlined" style={styles.input} type="text" id='email' placeholder='Email Address' placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setEmail(newText)}
+                                defaultValue={email}
+                            ></TextInput>
+                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password" id='password' placeholder='Password' placeholderTextColor={'#40376E'}
+                                onChangeText={newText => setPassword(newText)}
+                                defaultValue={password}
+                            ></TextInput>
+                            <Pressable id="execute" style={styles.button} onPress={() => auth()
                             }>
                                 <Text style={styles.start}>Sign Up</Text>
                             </Pressable>

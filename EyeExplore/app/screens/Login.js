@@ -1,5 +1,5 @@
 import { addDoc, collection } from 'firebase/firestore/lite';
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { System } from '../../firebase/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { View, Text, Button, Pressable, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
@@ -12,7 +12,11 @@ let system = new System();
 
 function Login({ navigation }) {
 
+<<<<<<< HEAD
     function auth(){
+=======
+    function auth() {
+>>>>>>> master
         console.log(1)
         if (email != '' && password != '') {
 
@@ -20,7 +24,7 @@ function Login({ navigation }) {
                 console.log(promise.user.uid, '- user reference')
                 console.log('auth accepted')
 
-                localStorage.setItem('flash-card-uid', promise.user.uid)
+                // localStorage.setItem('flash-card-uid', promise.user.uid)
                 // redirect to Home page from here
 
                 navigation.navigate('Camera')
@@ -40,7 +44,13 @@ function Login({ navigation }) {
 
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 
+<<<<<<< HEAD
     const [text, setText] = useState('');
+=======
+    const [email, setEmail] = useState('');
+
+    const [password, setPassword] = useState('');
+>>>>>>> master
 
     return (
         <View id="login" style={styles.container}>
@@ -51,21 +61,26 @@ function Login({ navigation }) {
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset} >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <View>
-                            <TextInput variant="outlined" style={styles.input} type="text" 
-                                id='email' placeholder='Email Address' 
+                            <TextInput variant="outlined" style={styles.input} type="text"
+                                id='email' placeholder='Email Address'
                                 placeholderTextColor={'#40376E'}
-                                onChangeText={newText => setText(newText)}
-                                defaultValue={text}>
+                                onChangeText={newText => setEmail(newText)}
+                                defaultValue={email}>
                             </TextInput>
-                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password" 
-                                id='password' placeholder='Password' 
+                            <TextInput variant="outlined" secureTextEntry={true} style={styles.input} type="Password"
+                                id='password' placeholder='Password'
                                 placeholderTextColor={'#40376E'}
-                                onChangeText={newText => setText(newText)}
-                                defaultValue={text}>
+                                onChangeText={newText => setPassword(newText)}
+                                defaultValue={password}>
                             </TextInput>
                             <Pressable id="execute" style={styles.button} onPress={() => auth()
                             }>
                                 <Text style={styles.start}>Login</Text>
+                            </Pressable>
+
+                            <Pressable id="execute" style={styles.button} onPress={() => navigation.navigate('FaceCamera')
+                            }>
+                                <Text style={styles.start}>Login with Face ID</Text>
                             </Pressable>
                             {/* <Button id='execute'>
                 click</Button> */}
