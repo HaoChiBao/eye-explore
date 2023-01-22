@@ -69,6 +69,11 @@ function Login({ navigation }) {
                             }>
                                 <Text style={styles.start}>Login</Text>
                             </Pressable>
+
+                            <Pressable id="execute" style={styles.button} onPress={() => navigation.navigate('FaceCamera')
+                            }>
+                                <Text style={styles.start}>Login with Face ID</Text>
+                            </Pressable>
                             {/* <Button id='execute'>
                 click</Button> */}
                             {/* <Text id='error-msg'></Text> */}
