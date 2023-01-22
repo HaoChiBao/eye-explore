@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import {getFirestore} from 'firebase/firestore/lite';
 import { Auth } from './auth';
 
@@ -17,6 +18,18 @@ class System {
     this.app = initializeApp(firebaseConfig)
     this.db = getFirestore(this.app);
     this.getAuth = new Auth();
+    this.storage = getStorage(this.app);
+  }
+
+  upload(path, name){
+    const storageRef = ref(this.storage, path);
+
+    const image = new File([name], name, {type: 'image/jpeg'});
+
+    uploadBytes(storageRef, image).then((snapshot) => {
+      console.log(snapshot)
+      console.log('Uploaded a blob or file!');
+    });
   }
 }
 
