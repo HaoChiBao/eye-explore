@@ -12,8 +12,13 @@ CORS(app)
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'googleSpeechToText.json'
 
 
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/description', methods=["POST"])
+def generate_description():
+    descrip = request.form.get("description")
+
+
+@app.route('/STT', methods=['POST'])
+def speech_to_text():
     file = request.form.get("audio_file")
 
     # Do the Google Shit
@@ -37,7 +42,7 @@ def upload():
     # Reads the response
     for result in response.results:
         translatedResponses.append("Transcript: {}".format(
-        result.alternatives[0].transcript))
+            result.alternatives[0].transcript))
 
     return jsonify(translatedResponses), 200
 
