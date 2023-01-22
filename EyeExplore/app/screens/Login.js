@@ -12,11 +12,8 @@ let system = new System();
 
 function Login({ navigation }) {
 
-<<<<<<< HEAD
     function auth(){
-=======
-    function auth() {
->>>>>>> master
+
         console.log(1)
         if (email != '' && password != '') {
 
@@ -43,14 +40,10 @@ function Login({ navigation }) {
 
 
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
-
-<<<<<<< HEAD
-    const [text, setText] = useState('');
-=======
+    
     const [email, setEmail] = useState('');
 
     const [password, setPassword] = useState('');
->>>>>>> master
 
     return (
         <View id="login" style={styles.container}>
